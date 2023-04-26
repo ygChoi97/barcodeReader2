@@ -1,0 +1,21 @@
+.show-list{
+    display: flex;
+    flex-direction: row;
+    align-items :flex-start;
+    position: absolute;
+    right: calc(10px);
+    margin: 0px 0;
+    z-index: 3;
+    transition: .3s;
+}
+    
+ .hide-list{
+    display: flex;
+    flex-direction: row;
+    align-items :flex-end;
+    position: absolute;
+    right: 100%;
+    margin: 5px 0;
+    z-index: 3;
+    transition: .3s;
+ }

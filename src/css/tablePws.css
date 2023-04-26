@@ -1,0 +1,223 @@
+body {
+  height: 100%;
+}
+
+.pws-table {
+  border-collapse: collapse;
+  margin: 0 0;
+  font-size: 0.9rem;
+  font-family: sans-serif;
+  width: 200%;
+  min-width: 400px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+ 
+.pws-table thead tr {
+  background-color: #009879;
+  color: #ffffff;
+  text-align: left;
+  height: 30px;
+}
+
+.pws-table th {
+  border: 1px solid #dddddd;
+  padding: 8px;
+  text-align: center;
+  font-size: 0.7rem;
+  /* min-width: 20%;
+  max-width: 20%; */
+  position: sticky;
+  top: 0px;
+  background-color: #009879 !important;
+}
+
+.pws-table td {
+    padding: 4px 10px;
+    border: 1px solid #dddddd;
+    font-size: 0.6rem;
+}
+
+/* 사용구분 */
+.pws-table td:nth-child(1) {
+  width: 45px;
+}
+/* 회사 */
+.pws-table td:nth-child(2) {
+  width: 40px;
+}
+/* 본부 */
+.pws-table td:nth-child(3) {
+  width: 80px;
+}
+/* 센터 */
+.pws-table td:nth-child(4) {
+  width: 100px;
+}
+/* 관리부서 */
+.pws-table td:nth-child(5) {
+  width: 100px;
+}
+/* 사용자 */
+.pws-table td:nth-child(6) {
+  width: 50px;
+}
+/* 사용자ID */
+.pws-table td:nth-child(7) {
+  width: 65px;
+}
+/* 코트트센터CD */
+.pws-table td:nth-child(8) {
+  width: 120px;
+}
+/* 모델명 */
+.pws-table td:nth-child(9) {
+  width: 50px;
+}
+/* 자산번호 */
+.pws-table td:nth-child(10) {
+  width: 55px;
+}
+/* 자산관리번호 */
+.pws-table td:nth-child(11) { 
+  width: 90px;
+}
+/* S/N */
+.pws-table td:nth-child(12) {
+  width: 40px;
+}
+/* 그래픽카드 */
+.pws-table td:nth-child(13) {
+  width: 100px;
+}
+/* 메모리 */
+.pws-table td:nth-child(14) {
+  width: 60px;
+}
+/* 모니터 */
+.pws-table td:nth-child(15) {
+  width: 60px;
+}
+/* 지역 */
+.pws-table td:nth-child(16) {
+  width: 65px;
+}
+/* 건물명 */
+.pws-table td:nth-child(17) {
+  width: 120px;
+}
+/* 층수 */
+.pws-table td:nth-child(18) {
+  width: 40px;
+}
+/* 상세위치 */
+.pws-table td:nth-child(19) {
+  width: 90px;
+}
+/* 구매용도 */
+.pws-table td:nth-child(20) {
+  width: 80px;
+}
+/* 사용용도 */
+.pws-table td:nth-child(21) {
+  width: 80px;
+}
+/* 상세업무 */
+.pws-table td:nth-child(22) {
+  width: 200px;
+}
+/* 도입년월 */
+.pws-table td:nth-child(23) {
+  width: 90px;
+}
+/* 비고 */
+.pws-table td:nth-child(24) {
+  width: 130px;
+}
+
+.pws-table tbody tr {
+  border-bottom: 1px solid #dddddd;
+  height: 23px;
+}
+
+.pws-table tbody tr:nth-of-type(even) {
+  background-color: #f3f3f3;
+}
+
+.pws-table tbody tr:hover {
+  cursor: pointer;
+  background-color: lightgoldenrodyellow;
+}
+
+.pws-table tbody tr:last-of-type {
+  border-bottom: 2px solid #009879;
+}
+
+.pws-table tbody tr.active-row {
+  font-weight: bold;
+  color: #009879;
+}
+
+.btnPage {
+  width: 5rem;
+  height: 1.7rem;
+  border-top-left-radius: 3px;
+  border-bottom-left-radius: 3px;
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+
+  background-color: rgba(255, 0, 140, 0.884);
+  color: white;
+  border: none;
+  margin: 0 2px;
+  transition: background-color 0.1s ease;
+}
+
+.btnPage:hover {
+  background-color: rgb(240, 10, 117);
+}
+
+.btnPage:active {
+  background-color: rgba(221, 34, 181, 0.473);
+  transform: translateY(2px);
+}
+
+.btnPageSE {
+  width: 2rem;
+  height: 1.7rem;
+  border-top-left-radius: 3px;
+  border-bottom-left-radius: 3px;
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+
+  background-color: rgba(255, 0, 140, 0.884);
+  color: white;
+  border: none;
+  margin: 0 5px;
+  transition: background-color 0.1s ease;
+}
+
+.btnPageSE:hover {
+  background-color: rgb(240, 10, 117);
+}
+
+.btnPageSE:active {
+  background-color: rgba(221, 34, 181, 0.473);
+  transform: translateY(2px);
+}
+
+.selectItem {
+  width : 7rem; /* 원하는 너비설정 */
+  padding: 0.2rem 0.5rem; /* 여백으로 높이 설정 */
+  font-family: inherit;  /* 폰트 상속 */
+  font-size: 0.7rem;
+  background: url(../dropdown.jfif) no-repeat 95% 50%; /* 네이티브 화살표 대체 */  
+  border-left-width:0;
+  border-right-width:0;
+  border-top-width:0;
+  border-bottom-width:2px;
+  outline: none;
+  -webkit-appearance: none; /* 네이티브 외형 감추기 */
+  -moz-appearance: none;
+  appearance: none;
+  margin:0px 15px;
+}

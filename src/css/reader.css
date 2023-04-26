@@ -1,0 +1,21 @@
+.show-reader{
+
+    position: absolute;      
+    z-index: 1;
+    transform: translateX(10%);
+    transition: .3s;
+}
+    
+ .hide-reader{
+
+    position: absolute;
+    z-index: 1;
+    transform : translateX(-100%);
+    
+    
+    transition: .3s;
+ }
+
+ input {
+    ime-mode: inactive;
+ }
