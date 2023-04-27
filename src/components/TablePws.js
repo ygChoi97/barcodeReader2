@@ -2,6 +2,7 @@ import { useContext, useEffect} from "react";
 import { useTable, usePagination, useFilters, useGlobalFilter, useSortBy } from "react-table";
 import { GlobalFilter, DefaultFilterForColumn } from "./Filter";
 import "../css/tablePws.css";
+import "../css/pagination.css";
 import PwsContext from "./PWS-Context";
 
 function TablePws({ columns, data, dataWasFiltered }) {
@@ -46,7 +47,7 @@ function TablePws({ columns, data, dataWasFiltered }) {
     console.log('Pws Table 랜더링');
     return (
         <>
-            <div style={{border: '1px solid',width:'100%', height: '82vh', overflow: 'auto'}}>
+            <div style={{width:'100%', height: 'calc(100vh - 145px)', overflow: 'auto'}}>
             <table className="pws-table" {...getTableProps()}>
                 <thead>
                     {/* <tr>            
@@ -101,16 +102,16 @@ function TablePws({ columns, data, dataWasFiltered }) {
             </table>
             </div>
             <div style={{ display: 'flex', justifyContent: 'center', marginTop: '0.5rem' }}>
-                <button className="btnPageSE" onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
+                <button className="btnPagePwsSE" onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
                     {"<<"}
                 </button>
-                <button className="btnPage" onClick={() => previousPage()} disabled={!canPreviousPage}>
+                <button className="btnPagePws" onClick={() => previousPage()} disabled={!canPreviousPage}>
                     Previous
                 </button>
-                <button className="btnPage" onClick={() => nextPage()} disabled={!canNextPage}>
+                <button className="btnPagePws" onClick={() => nextPage()} disabled={!canNextPage}>
                     Next
                 </button>
-                <button className="btnPageSE" onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
+                <button className="btnPagePwsSE" onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
                     {">>"}
                 </button>
                 <div style={{fontSize: '0.8rem', margin: '0 1rem'}}>
@@ -135,7 +136,7 @@ function TablePws({ columns, data, dataWasFiltered }) {
                         style={{ width: "50px", height: '1.5rem', marginRight: '5px',borderLeftWidth: '0', borderTopWidth: '0', borderRightWidth: '0', borderBottomWidth: '2px', outline: 'none', fontWeight: '600' }}
                     />
                 </span>{" "}
-                <select className="selectItem"
+                <select className="selectPageItem"
                     value={pageSize}
                     onChange={(e) => setPageSize(Number(e.target.value))}
                 >

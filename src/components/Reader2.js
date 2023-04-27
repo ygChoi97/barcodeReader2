@@ -48,6 +48,7 @@ const Reader2 = ({doScan}) => {
                 getConfirmationOK(`스캔한 ${value} 은(는) 이미 등록 진행중인 자산관리번호입니다.`);
             }
             setManagementId(value);
+            console.log(value);
             // inputCodeRef.current.value = null;
             setInputValue('');
             setIsScanning(false);
@@ -104,12 +105,11 @@ const Reader2 = ({doScan}) => {
         <div className={doScan ? "show-reader" : "hide-reader"} style={{height: '70px' ,display: 'flex', flexDirection: 'column', justifyContent: 'space-between'}}>
             <ConfirmationOK/>
             {/* { isScanning ? */}
-        <form style={{border: '1px solid', }} onSubmit={hSubmit}>
-            <input ref={inputCodeRef} type='text' name='code' style={{position: 'absolute', right:'0%'}} onChange={inputHandler} value={inputValue}/> 
-            {/* <button hidden>조회</button> */}
-
+        <form style={{}} onSubmit={hSubmit}>
+            <input ref={inputCodeRef} type='text' name='code' style={{position: 'relative', right:'0%', fontSize: '1.2rem', fontWeight: '600'}} onChange={inputHandler} value={inputValue}/> 
+            {/* <button >조회</button> */}
         </form>
-        <h3>Scanning...</h3>
+        <div style={{fontSize: '2rem'}}>Scanning...</div>
         
         {/* :
         <></>

@@ -22,7 +22,7 @@ function LeftInfo({doScan}) {
 
     console.log('LeftInfo() 렌더링')
     return (
-        <div className="wrapper" style={{border: '1px solid', }}>
+        <div className="wrapper">
             {/* <EnhancedTable doScan={doScan}/> */}
             <Pws doScan={doScan} />
 

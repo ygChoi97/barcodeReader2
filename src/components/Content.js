@@ -55,13 +55,13 @@ function Content({ item, update }) {
         update(item);
     };
 
-    console.log(`${item.dbColumn} ${value} 리랜더링`);
+    // console.log(`${item.dbColumn} ${value} 리랜더링`);
     const color = "#399939";
 
     return (
         <ListItem
             sx={{
-                height: 31
+                height: 28
             }}
         >
 

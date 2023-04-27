@@ -1,0 +1,64 @@
+.btnPagePws {
+    width: 6rem;
+    height: 1.5rem;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+  
+    background-color:lightgray;
+    color: black;
+    border: none;
+    margin: 0 2px;
+    transition: background-color 0.1s ease;
+  }
+  
+  .btnPagePws:hover {
+    background-color: lightsteelblue;
+  }
+  
+  .btnPagePws:active {
+    background-color: lightslategray;
+    transform: translateY(2px);
+  }
+  
+  .btnPagePwsSE {
+    width: 2.5rem;
+    height: 1.5rem;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+  
+    background-color: lightgray;
+    color: black;
+    border: none;
+    margin: 0 5px;
+    transition: background-color 0.1s ease;
+  }
+  
+  .btnPagePwsSE:hover {
+    background-color: lightsteelblue;
+  }
+  
+  .btnPagePwsSE:active {
+    background-color: lightslategray;
+    transform: translateY(2px);
+  }
+  
+  .selectPageItem {
+    width : 7rem; /* 원하는 너비설정 */
+    padding: 0.2rem 0.5rem; /* 여백으로 높이 설정 */
+    font-family: inherit;  /* 폰트 상속 */
+    font-size: 0.7rem;
+    background: url(../dropdown.jfif) no-repeat 95% 50%; /* 네이티브 화살표 대체 */  
+    border-left-width:0;
+    border-right-width:0;
+    border-top-width:0;
+    border-bottom-width:2px;
+    outline: none;
+    -webkit-appearance: none; /* 네이티브 외형 감추기 */
+    -moz-appearance: none;
+    appearance: none;
+    margin:0px 15px;
+  }
