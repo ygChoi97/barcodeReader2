@@ -1,10 +1,8 @@
 import React from "react";
 
 const PwsContext = React.createContext({
-    managementId : 'default value',
+    managementId : null,
     setManagementId: () => {},
-    // usage: '',
-    // setUsage: () => {}
 });
 
 export default PwsContext;

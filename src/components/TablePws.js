@@ -4,9 +4,11 @@ import { GlobalFilter, DefaultFilterForColumn } from "./Filter";
 import "../css/tablePws.css";
 import "../css/pagination.css";
 import PwsContext from "./PWS-Context";
+import SN_Context from "./SN-Context";
 
 function TablePws({ columns, data, dataWasFiltered }) {
     const { managementId, setManagementId } = useContext(PwsContext);
+    const { serialNo, setSerialNo } = useContext(SN_Context);
 
     const {
         getTableProps,
@@ -41,10 +43,19 @@ function TablePws({ columns, data, dataWasFiltered }) {
 
     const handleRowClick = (event, values) => {
         console.log('event : ', values);
-        setManagementId(values.idasset);
-
+        if(values.idasset !== null && values.idasset !== '') {
+            setManagementId(values.idasset);
+            setSerialNo('');
+        } 
+        else if(values.sn !== null && values.sn !== '') {
+            setSerialNo(values.sn);
+            setManagementId('');
+        }  
+        else {
+            alert('해당 PWS는 자산관리번호와 S/N 둘다 존재하지 않으므로 \n조회 불가능합니다. \n관리자에게 문의하십시오.');
+        }    
       };
-    console.log('Pws Table 랜더링');
+    console.log('Pws Table 랜더링', managementId);
     return (
         <>
             <div style={{width:'100%', height: 'calc(100vh - 145px)', overflow: 'auto'}}>

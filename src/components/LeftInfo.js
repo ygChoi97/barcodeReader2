@@ -29,7 +29,6 @@ function LeftInfo({doScan}) {
             
             {doScan ? 
             <Reader2 doScan={doScan}/>
-            // <MyInputComponent></MyInputComponent>
             : <></>
             }   
         </div>

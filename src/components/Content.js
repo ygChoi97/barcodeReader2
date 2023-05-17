@@ -76,16 +76,18 @@ function Content({ item, update }) {
                     </Grid>
                     <Grid item xs={9}>
                         {item.req === 'y' ?
-                            item.dbColumn === 'idasset' ?
+                            item.dbColumn === 'idasset' || item.dbColumn === 'sn'?
+
                                 <TextField
                                     // placeholder={item.value}
                                     fullWidth
                                     id="standard-read-only-input"
                                     // label={item.columnName}
                                     InputProps={{
-                                        // readOnly: true,
+                                        readOnly: false, 
                                         style: { height: '1rem', fontSize: '0.9rem', fontWeight: 600 }
                                     }}
+                                    
                                     defaultValue={''}
                                     variant="standard"
                                     value={item.data}
@@ -93,7 +95,7 @@ function Content({ item, update }) {
                                     color="secondary"
                                     onChange={handleChangeInput}
                                     focused
-                                />
+                                /> 
                                 :
                                 item.dbColumn === 'introductiondate' ?
                                     <LocalizationProvider dateAdapter={AdapterDayjs}>

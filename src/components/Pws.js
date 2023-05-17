@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import "../css/btnImportExport.css";
 import "../css/dropdownmenu.css"
 import TablePws from "./TablePws";
@@ -8,13 +8,28 @@ import ExcelToDB from "../exceltodb2.png";
 import DBToExcel from "../dbtoexcel2.png";
 import { useDetectOutsideClick } from "./useDetectOutsideClick";
 import "../css/datatable.css";
+import R_Context from "./R-Context";
 const BASE_URL = 'http://localhost:8181/api/pws';
 
-function Pws({ doScan }) {
+
+export function Refresh() {
+  console.log('1')
+  // const [,updateState] = useState();
+  const [user, setUser] = useState({});
+  console.log('2')
+  // const forceUpdate = useCallback(() => updateState({}), []);
+  setUser({ ...user })
+  console.log('3')
+
+  // forceUpdate();
+}
+export function Pws({doScan}) {
   const [columns, setColumns] = useState([]);
   const [data, setData] = useState([]);
 
   const [dbData, setDbData] = useState([]);
+
+  const { refresh, setRefresh} = useContext(R_Context);
 
   const $fileInput = useRef();
 
@@ -92,15 +107,14 @@ function Pws({ doScan }) {
           copyColumn.Header = json[i].column_comment;
           copyColumns.push(copyColumn);
         }
-        setColumns(copyColumns);
+        setColumns(copyColumns); 
         console.log('useEffect() fetch - /menu', copyColumns);
       });
 
     getAllDataFromDB();
-  }, []);
+  }, [refresh]);
 
   const readExcel = async (e) => {
-    let input = e.target;
     const file1 = e.target.files[0];
     console.log(file1);
     const ExcelJS = require("exceljs");
@@ -115,26 +129,39 @@ function Pws({ doScan }) {
         workbook.eachSheet((sheet, id) => {
           for (let c = 1; c <= sheet.getRow(1).cellCount; c++) {
             if (columns[c - 1].Header !== sheet.getRow(1).getCell(c).toString()) {
-              alert('You had selected wrong excel file.');
+              getConfirmationOK('해당 파일의 포맷은 import 불가합니다. 파일을 다시 선택해주세요.');
               return;
             }
           }
 
           let tempDbData = [];
           for (let r = 2; r <= sheet.rowCount; r++) {
+            let isEmpty = {idasset: false, sn: false};
             let obj = {};
             for (let c = 1; c <= sheet.getRow(1).cellCount; c++) {
-              if (columns[c - 1].accessor === 'introductiondate')
-                if (sheet.getRow(r).getCell(c).toString() !== '') {
+              
+              let str = sheet.getRow(r).getCell(c).toString();
+              str = str.replace(/\n/g, ""); // 개행문자 제거
+              str = str.trim();             // 양쪽 공백 제거
+
+              if(columns[c - 1].accessor === 'idasset' && str == '') isEmpty.idasset = true;
+              if(columns[c - 1].accessor === 'sn' && str == '') isEmpty.sn = true;
+              if(isEmpty.idasset & isEmpty.sn) {
+                getConfirmationOK(`실패 : 선택한 엑셀파일의 ${r}번째 행의 자산관리번호와 S/N가 둘다 빈칸입니다.\n import를 취소합니다.`);
+                return;
+              }
+
+              if (columns[c - 1].accessor === 'introductiondate') {
+                if (str !== '') {
                   obj[columns[c - 1].accessor] = new Date(sheet.getRow(r).getCell(c));
                 }
                 else
                   obj[columns[c - 1].accessor] = null;
-
-              else if (sheet.getRow(r).getCell(c).toString() == '_x000d_' || sheet.getRow(r).getCell(c).toString() == '')
+              }
+              else if (str == '_x000d_' || str == '')
                 obj[columns[c - 1].accessor] = null;
               else
-                obj[columns[c - 1].accessor] = sheet.getRow(r).getCell(c).toString();
+                obj[columns[c - 1].accessor] = str;
             }
             tempDbData.push(obj);
           }
@@ -161,6 +188,7 @@ function Pws({ doScan }) {
             })
             .catch(error => {
               console.log(error);
+              getConfirmationOK(`DB 업데이트 실패 \n ${error}`)
             });
         })
       })
@@ -173,6 +201,11 @@ function Pws({ doScan }) {
   };
 
   const exportHandler = e => {
+    
+    const currentDate = new Date(); 
+    //오늘날짜를 YYYY-MM-DD 로 선언하여 파일이름에 붙이기 위해서.
+    const currentDayFormat = `_${currentDate.getFullYear()}년${currentDate.getMonth()+1}월${currentDate.getDate()}일${currentDate.getHours()}시${currentDate.getMinutes()}분${currentDate.getSeconds()}초`;
+    
     const datas = filteredData.map(item => item.values);
     console.log(datas);
 
@@ -258,7 +291,7 @@ function Pws({ doScan }) {
 
       workbook.xlsx.writeBuffer().then((data) => {
         const blob = new Blob([data], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
-        saveFile(blob, 'PWS현황리스트');
+        saveFile(blob, `PWS현황리스트_Client_${currentDayFormat}`);
 
       })
       setIsActive(false);
@@ -274,7 +307,7 @@ function Pws({ doScan }) {
         description: 'Excel file',
         accept: { "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": ['.xlsx'] },
       }],
-      suggestedName: 'PWS현황리스트',
+      suggestedName: filename,
     };
     let handle = await window.showSaveFilePicker(opts);
     let writable = await handle.createWritable();
@@ -286,7 +319,7 @@ function Pws({ doScan }) {
   const dataWasFiltered = x => {
     filteredData = [...x];
   };
-
+  {/* <div className={doScan ? "hide-data" : "show-data"} > */}
   return (
     
     <div className={doScan ? "hide-data" : "show-data"} >
@@ -325,7 +358,9 @@ function Pws({ doScan }) {
         
       </div>
       
-      <input type="file" accept=".xls,.xlsx" onChange={readExcel} ref={$fileInput} hidden></input>
+      <input type="file" accept=".xls,.xlsx" onChange={readExcel} onClick={(event)=> { 
+               event.target.value = null
+          }} ref={$fileInput} hidden></input>
       <TablePws columns={columns} data={data} dataWasFiltered={dataWasFiltered} />
     </div>
   );
