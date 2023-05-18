@@ -9,7 +9,7 @@ function Content({ item, update }) {
     const [value, setValue] = useState(null);
 
     useEffect(() => {
-        if (item.dbColumn === 'introductiondate' && item.data != null) {
+        if (item.dbColumn === 'introductiondate' && item.data !== null || item.data === '') {
 
             setValue(new Date(item.data));
         }
@@ -47,15 +47,10 @@ function Content({ item, update }) {
     });
 
     const handleChangeInput = (e) => {
-        console.log(e.target.value);
-        // const copyItem = item;
-        // copyItem.data = e.target.value;
         item.data = e.target.value;
-        console.log(item)
         update(item);
     };
 
-    // console.log(`${item.dbColumn} ${value} 리랜더링`);
     const color = "#399939";
 
     return (
@@ -76,7 +71,7 @@ function Content({ item, update }) {
                     </Grid>
                     <Grid item xs={9}>
                         {item.req === 'y' ?
-                            item.dbColumn === 'idasset' || item.dbColumn === 'sn'?
+                            item.dbColumn === 'idasset' || item.dbColumn === 'sn' ?
 
                                 <TextField
                                     // placeholder={item.value}
@@ -106,7 +101,6 @@ function Content({ item, update }) {
                                                 if (newValue != null) {
                                                     item.data = newValue.format("YYYY-MM-DD");
                                                     update(item);
-                                                    console.log(newValue);
                                                 }
                                                 else
                                                     item.data = null;

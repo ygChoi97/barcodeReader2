@@ -28,7 +28,7 @@ function ContentList() {
 
     const [isOpen, setIsOpen] = useState(false);
 
-    // 자산 초기화 함수
+    // 자산 초기화 함수 (idasset 스캔)
     function initContentsWithIdAsset() {
         let copyContents = [...contents];
 
@@ -55,6 +55,7 @@ function ContentList() {
         console.log(pwsInfo);
     }
 
+    // 자산 초기화 함수 (sn 스캔)
     function initContentsWithSN() {
         let copyContents = [...contents];
 
@@ -124,16 +125,16 @@ function ContentList() {
     // PWS 정보 렌더링 
     const items = contents.map(item => {
         // console.log(item);
-        if (item.data == undefined) {
+        if (item.data === undefined) {
 
             console.log(item)
-            if (item.dbColumn == 'introductiondate')
+            if (item.dbColumn === 'introductiondate')
                 item.data = null;
             else
                 item.data = '';
         }
-        if(item.columnName !== ' id')
-            return <Content key={item.columnName} item={item} update={update} />;
+        if(item.dbColumn !== 'id')
+            return <Content key={item.dbColumn} item={item} update={update} />;
     });
 
     useEffect(() => {
@@ -156,7 +157,7 @@ function ContentList() {
                     let copyContent = {};
                     copyContent.columnName = json[i].column_comment;
                     copyContent.dbColumn = json[i].column_name;
-                    if (json[i].column_name === 'idasset' || json[i].column_name === 'sn')
+                    if (json[i].column_name === 'idasset' || json[i].column_name === 'sn' || json[i].column_name === 'introductiondate')
                         copyContent.req = 'y';
                     copyContents.push(copyContent);
                 }
@@ -279,7 +280,7 @@ function ContentList() {
         for (let key in pwsInfo) {
             const value = pwsInfo[key];
             if(value != null)
-                if(value.trim() == '')
+                if(value.trim() === '')
                     pwsInfo[key] = null;
                 else
                     pwsInfo[key] = value.trim();
