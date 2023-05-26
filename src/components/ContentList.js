@@ -125,7 +125,7 @@ function ContentList() {
     // PWS 정보 렌더링 
     const items = contents.map(item => {
         // console.log(item);
-        if (item.data === undefined) {
+        if (item.data === null) {
 
             console.log(item)
             if (item.dbColumn === 'introductiondate')
