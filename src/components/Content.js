@@ -9,12 +9,11 @@ function Content({ item, update }) {
     const [value, setValue] = useState(null);
 
     useEffect(() => {
-        if (item.dbColumn === 'introductiondate' && item.data !== null || item.data === '') {
-
-            setValue(new Date(item.data));
-        }
-        else if (item.dbColumn === 'introductiondate' && (item.data === null || item.data === '')) {
-            setValue(null);
+        if (item.dbColumn === 'introductiondate') {
+            if(item.data !== null)
+                setValue(new Date(item.data));
+            else
+                setValue(null);
         }
     }, [item.data]);
 
@@ -95,15 +94,20 @@ function Content({ item, update }) {
                                 item.dbColumn === 'introductiondate' ?
                                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                                         <DesktopDatePicker value={value} inputFormat={"YYYY-MM-DD"} showToolbar
+                                            componentsProps={{
+                                                actionBar: {
+                                                    actions: ['clear'],
+                                                },
+                                            }}
                                             onChange={(newValue) => {
-                                                setValue(newValue);
-
                                                 if (newValue != null) {
                                                     item.data = newValue.format("YYYY-MM-DD");
                                                     update(item);
                                                 }
-                                                else
+                                                else {
                                                     item.data = null;
+                                                    update(item);
+                                                }
                                             }}
                                             renderInput={(params) => <TextField size="small" {...params}
                                                 sx={{

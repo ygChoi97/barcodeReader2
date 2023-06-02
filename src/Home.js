@@ -9,13 +9,13 @@ function Home() {
     const [managementId, setManagementId] = useState("");
     const [serialNo, setSerialNo] = useState("");
     const [refresh, setRefresh] = useState(false);
-    const value = { managementId, setManagementId };
+    const value1 = { managementId, setManagementId };
     const value2 = { serialNo, setSerialNo };
     const value3 = { refresh, setRefresh };
     
     console.log('Home() 렌더링');
     return(
-        <PwsContext.Provider value={value}>
+        <PwsContext.Provider value={value1}>
             <SN_Context.Provider value={value2}>
                 <R_Context.Provider value={value3}>
             <div className="wrapper"/*  style={{display:'flex', flexDirection:'row', justifyContent:'space-between', alignItems:'flex-start'}} */>

@@ -393,7 +393,7 @@ function ContentList() {
 
     }
 
-    const onClickDisplayHanler = (e) => {
+    const onClickCloseHanler = (e) => {
         setIsOpen(!isOpen);
         setManagementId('');
         setSerialNo('');
@@ -416,7 +416,7 @@ function ContentList() {
                 <div style={{ display: 'flex', justifyContent: 'center' }}>
                     <Button variant="contained" color="secondary" sx={{ width: 80, height: 19, padding: 1, mb: 1, mr: 1 }} disabled={Boolean(bUploadDisabled | btnMode)} onClick={onClickUploadHandler}>upload</Button>
                     <Button variant="contained" color="success" sx={{ width: 80, height: 19, padding: 1, mb: 1, mr: 1 }} disabled={Boolean(bModifyDisabled | btnMode)} onClick={onClickModifyHandler}>modify</Button>
-                    <Button variant="contained" sx={{ width: 80, height: 19, padding: 1, mb: 1, mr: 1 }} onClick={onClickDisplayHanler}>close</Button>
+                    <Button variant="contained" sx={{ width: 80, height: 19, padding: 1, mb: 1, mr: 1 }} onClick={onClickCloseHanler}>close</Button>
                 </div>
             </Paper>
         </div>
