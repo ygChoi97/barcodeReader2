@@ -58,7 +58,7 @@ function TablePws({ columns, data, dataWasFiltered }) {
 
     return (
         <>
-            <div style={{ width: '100vw', height: 'calc(100vh - 165px)', overflow: 'auto' }}>
+            <div style={{ width: '100%', height: 'calc(100vh - 165px)', overflow: 'auto' }}>
                 <table className="pws-table" {...getTableProps()}>
                     <thead>
                         {/* <tr>            
@@ -112,7 +112,7 @@ function TablePws({ columns, data, dataWasFiltered }) {
                     </tbody>
                 </table>
             </div>
-            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '0.5rem' }}>
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '1rem' }}>
                 <button className="btnPagePwsSE" onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
                     {"<<"}
                 </button>

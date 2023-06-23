@@ -15,7 +15,7 @@ function ScannerBtn() {
         // <div className="wrapper" style={{border:'solid 1px', width: '70%'}}> #61cc53
         <div className="wrapper" style={{position: 'absolute', zIndex: 1}} >
 
-            <div className="header" style={{ height: '50px',display: 'flex', justifyContent: 'space-between', alignItems: 'center' ,borderBottom: '2px solid', margin: '0.1rem 0.3rem'}}>
+            <div className="header" style={{ height: '50px',display: 'flex', justifyContent: 'space-between', alignItems: 'center' ,borderBottom: '2px solid', margin: '0.1rem 0rem'}}>
                 {doScan ?
                     <div onClick={onToggleScanHandler} style={{display: 'flex', alignItems: 'center', marginLeft: '0.5rem'}} >
                         <PlaylistAddCheck sx={{ fontSize: 35 }} />

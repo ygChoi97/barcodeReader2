@@ -7,7 +7,7 @@ body {
   margin: 0 0;
   font-size: 0.9rem;
   font-family: sans-serif;
-  width: 200%;
+  width: 250%;
   min-width: 400px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
 }
@@ -59,7 +59,7 @@ body {
 }
 /* 사용자 */
 .pws-table td:nth-child(6) {
-  width: 80px;
+  width: 60px;
 }
 /* 사용자ID */
 .pws-table td:nth-child(7) {
@@ -67,7 +67,7 @@ body {
 }
 /* 코트트센터CD */
 .pws-table td:nth-child(8) {
-  width: 120px;
+  width: 70px;
 }
 /* 모델명 */
 .pws-table td:nth-child(9) {
@@ -99,11 +99,11 @@ body {
 }
 /* 지역 */
 .pws-table td:nth-child(16) {
-  width: 65px;
+  width: 60px;
 }
 /* 건물명 */
 .pws-table td:nth-child(17) {
-  width: 120px;
+  width: 100px;
 }
 /* 층수 */
 .pws-table td:nth-child(18) {
@@ -115,23 +115,23 @@ body {
 }
 /* 구매용도 */
 .pws-table td:nth-child(20) {
-  width: 80px;
+  width: 60px;
 }
 /* 사용용도 */
 .pws-table td:nth-child(21) {
-  width: 80px;
+  width: 60px;
 }
 /* 상세업무 */
 .pws-table td:nth-child(22) {
-  width: 120px;
+  width: 150px;
 }
 /* 도입년월 */
 .pws-table td:nth-child(23) {
-  width: 60px;
+  width: 65px;
 }
 /* 비고 */
 .pws-table td:nth-child(24) {
-  width: 200px;
+  width: 250px;
 }
 
 .pws-table tbody tr {
