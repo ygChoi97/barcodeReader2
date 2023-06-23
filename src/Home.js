@@ -24,7 +24,7 @@ function Home() {
         <PwsContext.Provider value={value1}>
             <SN_Context.Provider value={value2}>
                 <R_Context.Provider value={value3}>
-                    <div className="wrapper"/*  style={{display:'flex', flexDirection:'row', justifyContent:'space-between', alignItems:'flex-start'}} */>
+                    <div className="wrapper">
                         <ScannerBtn />
                         <ContentList />
                     </div>

@@ -30,7 +30,7 @@ function ScannerBtn() {
                     </div>
                     
                 }
-                <div style={{fontSize: '1.2rem', fontWeight: '900', fontStyle: 'oblique', textShadow: '2px 2px 3px black',color : 'whitesmoke', marginRight: '1rem'}}>PWS Survey Manager</div>
+                <div className="title">PWS Survey Manager</div>
             </div>
 
             <div className="" >
