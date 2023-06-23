@@ -1,7 +1,6 @@
 import { Button, List, Paper } from "@mui/material";
 import React, { useContext, useEffect, useState } from "react";
 import Content from "./Content";
-import '../css/main.css';
 import '../css/contentlist.css';
 import PwsContext from "./PWS-Context";
 import SN_Context from "./SN-Context";
@@ -287,6 +286,7 @@ function ContentList() {
         }
         console.log('pwsInfo : ', pwsInfo);
 
+        let msg = '';
         fetch(BASE_URL, {
             method: 'POST',
             headers: { 'Content-type': 'application/json' },
@@ -294,8 +294,8 @@ function ContentList() {
         })
             .then(res => {
                 if (!res.ok) {
-                    console.log(JSON.stringify(pwsInfo));
-                    throw new Error(res.status);
+                    msg = `status(${res.status}) `
+                    return res.json();
                 }
                 else {
                     setBtnMode(true);
@@ -304,19 +304,23 @@ function ContentList() {
                     return res.json();
                 }
             })
-            .then(json => {                
-                if(pwsInfo.idasset !== null && pwsInfo.idasset !== '')
-                    getConfirmationOK(`${pwsInfo.idasset} DB 저장 완료!`);
-                else
-                    getConfirmationOK(`${pwsInfo.sn} DB 저장 완료!`);
+            .then(json => {    
+                if(json.count && json.pwsDtos) {   // SQL이 정상동작했다면 PwsDto을 response            
+                    if (pwsInfo.idasset !== null && pwsInfo.idasset !== '')
+                        getConfirmationOK(`${pwsInfo.idasset} DB 저장 완료!`);
+                    else
+                        getConfirmationOK(`${pwsInfo.sn} DB 저장 완료!`);
 
-                setRefresh(!refresh);
+                    setRefresh(!refresh);
+                }
+                else
+                    throw new Error(msg.concat(json.cause.message));
             })
             .catch(error => {
                 if(pwsInfo.idasset !== null && pwsInfo.idasset !== '')
-                    getConfirmationOK(`${pwsInfo.idasset} DB 저장 실패(${error})`);
+                    getConfirmationOK(`${pwsInfo.idasset} DB 저장 실패 (${error})`);
                 else
-                    getConfirmationOK(`${pwsInfo.sn} DB 저장 실패(${error})`);
+                    getConfirmationOK(`${pwsInfo.sn} DB 저장 실패 (${error})`);
             });
     };
 
@@ -336,16 +340,11 @@ function ContentList() {
         console.log('pwsInfo : ', pwsInfo);
         console.log(`managementId: ${managementId}, serialNo: ${serialNo}`)
 
-        let BASE_URL_PUT='';
-        if(pwsInfo.idasset !== null && pwsInfo.idasset !== '')
-            BASE_URL_PUT = `${BASE_URL}/idasset`;
-        else if(pwsInfo.sn !== null && pwsInfo.sn !== '')
-            BASE_URL_PUT = `${BASE_URL}/sn`;
-        else {
-            getConfirmationOK('해당 PWS의 자산관리번호와 S/N가 존재하지 않으므로 조회할 수 없습니다. 관리자에게 문의하십시오.');
+        if ((pwsInfo.idasset === null || pwsInfo.idasset === '') && (pwsInfo.sn === null || pwsInfo.sn === '')) {
+            getConfirmationOK('해당 PWS의 자산관리번호와 S/N 중에서 최소 하나는 입력되어야 수정이 가능합니다.');
             return;
         }
-        
+        let msg = '';
         fetch(BASE_URL, {
             method: 'PUT',
             headers: { 'Content-type': 'application/json' },
@@ -353,8 +352,8 @@ function ContentList() {
         })
             .then(res => {
                 if (!res.ok) {
-                    console.log(JSON.stringify(pwsInfo));
-                    console.log(res); throw new Error(res.status);
+                    msg = `status(${res.status}) `
+                    return res.json();
                 }
                 else {
                     setBtnMode(true);
@@ -362,43 +361,36 @@ function ContentList() {
                 }
             })
             .then(json => {
-                console.log(json);
-                if(pwsInfo.idasset !== null && pwsInfo.idasset !== '')
-                    getConfirmationOK(`${pwsInfo.idasset} DB 저장 완료!`);
-                else
-                    getConfirmationOK(`${pwsInfo.sn} DB 저장 완료!`);
+                console.log(json)
+                if (json.count) {   // SQL이 정상동작했다면 PwsDto을 response
+                    if (pwsInfo.idasset !== null && pwsInfo.idasset !== '')
+                        getConfirmationOK(`${pwsInfo.idasset} DB 저장 완료!`);
+                    else
+                        getConfirmationOK(`${pwsInfo.sn} DB 저장 완료!`);
 
-                setRefresh(!refresh);
-                
+                    setRefresh(!refresh);
+                }
+                else
+                    throw new Error(msg.concat(json.cause.message));
+
             })
             .catch(error => {
-                console.log(error);
                 if(pwsInfo.idasset !== null && pwsInfo.idasset !== '')
-                    getConfirmationOK(`${pwsInfo.idasset} DB 저장 실패(${error})`);
+                    getConfirmationOK(`${pwsInfo.idasset} DB 저장 실패 (${error})`);
                 else
-                    getConfirmationOK(`${pwsInfo.sn} DB 저장 실패(${error})`);
+                    getConfirmationOK(`${pwsInfo.sn} DB 저장 실패 (${error})`);
                 
             });
     };
-
-    const style1 = {
-
-        display: 'flex',
-        justifyContent: 'flex-end',
-        width: '30%',
-        visibility: 'visible',
-        position: 'absolute',
-        zIndex: 2,
-        right: '-30%'
-
-    }
 
     const onClickCloseHanler = (e) => {
         setIsOpen(!isOpen);
         setManagementId('');
         setSerialNo('');
+        const inputScanCode = document.getElementById("inputScanCode");
+        if(inputScanCode)
+            inputScanCode.focus();
     };
-    console.log('ContentList 렌더링');
 
     return (
         <div className={isOpen ? "show-list" : "hide-list"}>
@@ -406,9 +398,9 @@ function ContentList() {
             <ConfirmationOK />
             <Paper sx={{
                 width: 400,
-                borderRadius: 3, borderColor: "#000",
+                borderRadius: 1, borderColor: "#000",
                 backgroundColor: (theme) =>
-                    theme.palette.mode === 'dark' ? '#1A2027' : '#FFFFFF',
+                    theme.palette.mode === 'dark' ? '#1A2027' : '#FFFFFC',
             }} elevation={8}>
                 <List>
                     {items}

@@ -4,7 +4,7 @@ import ScannerBtn from "./components/ScannerBtn";
 import PwsContext from "./components/PWS-Context";
 import SN_Context from "./components/SN-Context";
 import R_Context from "./components/R-Context"
-
+import './css/main.css';
 function Home() {
     const [managementId, setManagementId] = useState("");
     const [serialNo, setSerialNo] = useState("");
@@ -13,16 +13,22 @@ function Home() {
     const value2 = { serialNo, setSerialNo };
     const value3 = { refresh, setRefresh };
     
+    // 배포 환경에서 console.log, console.warn 지우기
+    if (process.env.NODE_ENV) {
+        console.log = function no_console() { };
+        console.warn = function no_console() { };
+    }
+    
     console.log('Home() 렌더링');
-    return(
+    return (
         <PwsContext.Provider value={value1}>
             <SN_Context.Provider value={value2}>
                 <R_Context.Provider value={value3}>
-            <div className="wrapper"/*  style={{display:'flex', flexDirection:'row', justifyContent:'space-between', alignItems:'flex-start'}} */>
-                <ScannerBtn />
-                <ContentList />
-            </div>
-            </R_Context.Provider>
+                    <div className="wrapper"/*  style={{display:'flex', flexDirection:'row', justifyContent:'space-between', alignItems:'flex-start'}} */>
+                        <ScannerBtn />
+                        <ContentList />
+                    </div>
+                </R_Context.Provider>
             </SN_Context.Provider>
         </PwsContext.Provider>
     );

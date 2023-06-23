@@ -11,25 +11,13 @@ import "../css/datatable.css";
 import R_Context from "./R-Context";
 const BASE_URL = 'http://localhost:8181/api/pws';
 
-
-export function Refresh() {
-  console.log('1')
-  // const [,updateState] = useState();
-  const [user, setUser] = useState({});
-  console.log('2')
-  // const forceUpdate = useCallback(() => updateState({}), []);
-  setUser({ ...user })
-  console.log('3')
-
-  // forceUpdate();
-}
-export function Pws({doScan}) {
+export function Pws({ doScan }) {
   const [columns, setColumns] = useState([]);
   const [data, setData] = useState([]);
 
   const [dbData, setDbData] = useState([]);
 
-  const { refresh, setRefresh} = useContext(R_Context);
+  const { refresh, setRefresh } = useContext(R_Context);
 
   const $fileInput = useRef();
 
@@ -60,6 +48,10 @@ export function Pws({doScan}) {
     fetch(BASE_URL)
       .then(res => {
         if (!res.ok) {
+          if (res.status == 404)
+            getConfirmationOK(`${res.status}Error - DB 테이블의 데이터가 존재하지 않습니다.`)
+          else
+            getConfirmationOK(`${res.status}Error - DB 테이블의 데이터를 가져올 수 없습니다.`)
           throw new Error(res.status);
         }
         else {
@@ -107,7 +99,7 @@ export function Pws({doScan}) {
           copyColumn.Header = json[i].column_comment;
           copyColumns.push(copyColumn);
         }
-        setColumns(copyColumns); 
+        setColumns(copyColumns);
         console.log('useEffect() fetch - /menu', copyColumns);
       });
 
@@ -136,17 +128,17 @@ export function Pws({doScan}) {
 
           let tempDbData = [];
           for (let r = 2; r <= sheet.rowCount; r++) {
-            let isEmpty = {idasset: false, sn: false};
+            let isEmpty = { idasset: false, sn: false };
             let obj = {};
             for (let c = 1; c <= sheet.getRow(1).cellCount; c++) {
-              
+
               let str = sheet.getRow(r).getCell(c).toString();
               str = str.replace(/\n/g, ""); // 개행문자 제거
               str = str.trim();             // 양쪽 공백 제거
 
-              if(columns[c - 1].accessor === 'idasset' && str == '') isEmpty.idasset = true;
-              if(columns[c - 1].accessor === 'sn' && str == '') isEmpty.sn = true;
-              if(isEmpty.idasset & isEmpty.sn) {
+              if (columns[c - 1].accessor === 'idasset' && str == '') isEmpty.idasset = true;
+              if (columns[c - 1].accessor === 'sn' && str == '') isEmpty.sn = true;
+              if (isEmpty.idasset & isEmpty.sn) {
                 getConfirmationOK(`실패 : 선택한 엑셀파일의 ${r}번째 행의 자산관리번호와 S/N가 둘다 빈칸입니다.\n import를 취소합니다.`);
                 return;
               }
@@ -201,11 +193,11 @@ export function Pws({doScan}) {
   };
 
   const exportHandler = e => {
-    
-    const currentDate = new Date(); 
+
+    const currentDate = new Date();
     //오늘날짜를 YYYY-MM-DD 로 선언하여 파일이름에 붙이기 위해서.
-    const currentDayFormat = `_${currentDate.getFullYear()}년${currentDate.getMonth()+1}월${currentDate.getDate()}일${currentDate.getHours()}시${currentDate.getMinutes()}분${currentDate.getSeconds()}초`;
-    
+    const currentDayFormat = `_${currentDate.getFullYear()}년${currentDate.getMonth() + 1}월${currentDate.getDate()}일${currentDate.getHours()}시${currentDate.getMinutes()}분${currentDate.getSeconds()}초`;
+
     const datas = filteredData.map(item => item.values);
     console.log(datas);
 
@@ -272,7 +264,7 @@ export function Pws({doScan}) {
         for (let loop = 1; loop <= columns.length; loop++) {
           const col = sheetOne.getRow(index + 1).getCell(loop);
           col.border = borderStyle;
-          if(index === 0) col.fill = fillStyle;
+          if (index === 0) col.fill = fillStyle;
         }
       });
 
@@ -311,13 +303,13 @@ export function Pws({doScan}) {
   const dataWasFiltered = x => {
     filteredData = [...x];
   };
-  {/* <div className={doScan ? "hide-data" : "show-data"} > */}
+  {/* <div className={doScan ? "hide-data" : "show-data"} > */ }
   return (
-    
+
     <div className={doScan ? "hide-data" : "show-data"} >
-      <div style={{ height: '50px' , display: 'flex', flexDirection: 'column', alignItems: 'flex-start'}}>
-        <ConfirmationOK />   
-        <div className="container" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start'}}>
+      <div style={{ height: '50px', display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+        <ConfirmationOK />
+        <div className="container" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
           <div ref={dropdownRef} className="menu-container">
             <button onClick={() => { setIsActive(!isActive) }} className="menu-trigger">
               <span>Excel 연동</span>
@@ -346,13 +338,13 @@ export function Pws({doScan}) {
           </div>
           {/* <div>123</div>
           <div>456</div> */}
-        </div> 
-        
+        </div>
+
       </div>
-      
-      <input type="file" accept=".xls,.xlsx" onChange={readExcel} onClick={(event)=> { 
-               event.target.value = null
-          }} ref={$fileInput} hidden></input>
+
+      <input type="file" accept=".xls,.xlsx" onChange={readExcel} onClick={(event) => {
+        event.target.value = null
+      }} ref={$fileInput} hidden></input>
       <TablePws columns={columns} data={data} dataWasFiltered={dataWasFiltered} />
     </div>
   );

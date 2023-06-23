@@ -82,9 +82,8 @@ function Content({ item, update }) {
                                         style: { height: '1rem', fontSize: '0.9rem', fontWeight: 600 }
                                     }}
                                     
-                                    defaultValue={''}
                                     variant="standard"
-                                    value={item.data}
+                                    value={item.data || ''}
                                     size="small"
                                     color="secondary"
                                     onChange={handleChangeInput}
@@ -126,8 +125,7 @@ function Content({ item, update }) {
                                         id="outlined-required"
                                         //label={item.columnName}
                                         inputProps={{ style: { height: 9, fontSize: '1rem', fontWeight: 400 } }}
-                                        defaultValue=''
-                                        value={item.data}
+                                        value={item.data || ''}
                                         onChange={handleChangeInput}
                                         size="small"
                                     />
@@ -136,8 +134,7 @@ function Content({ item, update }) {
                             <>
                             
                                 <Select
-                                    defaultValue=''
-                                    value={item.data|| ''}
+                                    value={item.data || ''}
                                     onChange={handleChangeInput}                             
                                     sx={{width: 1, height: '1.6rem', fontSize: '0.7rem', textAlign:'left'}}
                                 >
@@ -155,8 +152,7 @@ function Content({ item, update }) {
                             <>
                             
                                 <Select
-                                    defaultValue=''
-                                    value={item.data|| ''}
+                                    value={item.data || ''}
                                     onChange={handleChangeInput}                             
                                     sx={{width: 1, height: '1.6rem', fontSize: '0.7rem', textAlign:'left'}}
                                 >
@@ -187,8 +183,7 @@ function Content({ item, update }) {
                                 id="standard-basic"
                                 inputProps={{ style: { height: 9, fontSize: '0.7rem', fontWeight: 400 } }}
                                 //label={item.columnName}
-                                defaultValue=''
-                                value={item.data}
+                                value={item.data ||''}
                                 onChange={handleChangeInput}
                                 sx={{
                                     width: 1,

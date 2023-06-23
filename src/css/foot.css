@@ -1,3 +1,33 @@
+.foot-container {
+  position: absolute; 
+  right: 10px;
+  bottom: 10px;
+}
+
+.company-foot {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.8rem;
+  font-weight: 900;
+  font-family: Arial, Helvetica, sans-serif;
+  color: rgb(10, 10, 90);
+  opacity: 44%;
+  margin-top: auto;
+  margin-right: 0.5rem;
+  margin-left: auto;
+}
+
+.company-foot:hover{
+  transition: 0.7s ease-out;
+  opacity: 100%;
+}
+
+.company-foot:not(:hover) {
+  transition: .4s ease-in;
+  opacity: 44%;
+}
+
 .btnPagePws {
     width: 6rem;
     height: 1.5rem;
@@ -5,7 +35,6 @@
     border-bottom-left-radius: 3px;
     border-top-right-radius: 3px;
     border-bottom-right-radius: 3px;
-  
     background-color:lightgray;
     color: black;
     border: none;
