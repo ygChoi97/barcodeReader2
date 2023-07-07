@@ -70,7 +70,7 @@ function Content({ item, update }) {
                     </Grid>
                     <Grid item xs={9}>
                         {item.req === 'y' ?
-                            item.dbColumn === 'idasset' || item.dbColumn === 'sn' ?
+                            item.dbColumn === 'idasset' ?
 
                                 <TextField
                                     // placeholder={item.value}

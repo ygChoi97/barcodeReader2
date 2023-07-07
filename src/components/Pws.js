@@ -93,7 +93,7 @@ export function Pws({ doScan }) {
       .then(json => {
 
         let copyColumns = [];
-        for (let i = 1; i < json.length; i++) {
+        for (let i = 0; i < json.length; i++) {
           let copyColumn = { accessor: '', Header: '' };
           copyColumn.accessor = json[i].column_name;
           copyColumn.Header = json[i].column_comment;
@@ -345,7 +345,7 @@ export function Pws({ doScan }) {
       <input type="file" accept=".xls,.xlsx" onChange={readExcel} onClick={(event) => {
         event.target.value = null
       }} ref={$fileInput} hidden></input>
-      <TablePws columns={columns} data={data} dataWasFiltered={dataWasFiltered} />
+      <TablePws columns={columns} data={data} dataWasFiltered={dataWasFiltered} doScan={doScan}/>
     </div>
   );
 }

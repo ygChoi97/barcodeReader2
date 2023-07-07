@@ -3,10 +3,10 @@
 }
 
 .title {
-    font-size: 1.2rem;
-    font-weight: 900;
-    font-style: oblique;
-    text-shadow: 2px 2px 5px rgb(112, 110, 110);
-    color: #272727;
+    font-family: 'Yu Gothic UI Semibold';
+    font-size: 1.4rem;
+    font-weight: 600;
+    text-shadow: 1px 1px 1px rgb(13, 116, 0);
+    color: #A9D08E;
     margin-right: 1rem;
 }

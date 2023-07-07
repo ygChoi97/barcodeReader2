@@ -7,7 +7,6 @@ function ScannerBtn() {
     const [doScan, setDoScan] = useState(false);
     const onToggleScanHandler = e => {
         setDoScan(!doScan);
-        console.log(doScan);
     }
 
     console.log('ScannerBtn() 렌더링');

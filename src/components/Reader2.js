@@ -3,6 +3,7 @@ import PwsContext from './PWS-Context';
 import SN_Context from "./SN-Context";
 import useConfirm from "./useConfirm";
 import "../css/scanning.css";
+import ContentList from './ContentList';
 
 const Reader2 = ({ doScan }) => {
     const { managementId, setManagementId } = useContext(PwsContext);
@@ -109,17 +110,20 @@ const Reader2 = ({ doScan }) => {
     }
 
     return (
+        <>
         <div className={doScan ? "show-reader" : "hide-reader"} style={{ height: '70px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
             <ConfirmationOK />
+            
             {/* { isScanning ? */}
             <form style={{}} onSubmit={hSubmit}>
-                <input id="inputScanCode" ref={inputCodeRef} type='text' name='code' style={{ position: 'relative', right: '0%', fontSize: '1.2rem', fontWeight: '600', borderLeftWidth: '2px', borderRightWidth: '2px', borderTopWidth: '2px', borderBottomWidth:'2px',outline: 'none'}} onChange={inputHandler} value={inputValue} />
+                <input id="inputScanCode" ref={inputCodeRef} type='text' name='code' style={{ position: 'relative', right: '0%', fontSize: '1.2rem', fontWeight: '600', borderWidth: '2px', outline: 'none'}} onChange={inputHandler} value={inputValue} />
                 {/* <button >조회</button> */}
             </form>
             <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', margin: 0 }}>
                 <div style={{ fontSize: '2.5rem', fontWeight: 600 }}>Scanning</div><div className='line anim-typewriter' >....</div>
             </div>
         </div>
+        </>
     );
 }
 

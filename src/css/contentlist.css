@@ -23,7 +23,20 @@
     opacity: 1;
     transition: .3s;
 }
-    
+
+.show-listOnScan{
+    display: flex;
+    flex-direction: row;
+    align-items :flex-start;
+    position: absolute;
+    top: 5%;
+    right: calc(5px);
+    margin: 0.5rem 0;
+    z-index: 3;
+    opacity: 1;
+    transition: .4s;
+}
+
  .hide-list{
     display: flex;
     flex-direction: row;

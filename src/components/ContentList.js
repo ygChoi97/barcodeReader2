@@ -9,7 +9,7 @@ import useConfirm from "./useConfirm";
 
 const BASE_URL = 'http://localhost:8181/api/pws';
 
-function ContentList() {
+function ContentList({doScan}) {
     const { managementId, setManagementId } = useContext(PwsContext);
     const { serialNo, setSerialNo } = useContext(SN_Context);
     const { refresh, setRefresh} = useContext(R_Context);
@@ -156,7 +156,7 @@ function ContentList() {
                     let copyContent = {};
                     copyContent.columnName = json[i].column_comment;
                     copyContent.dbColumn = json[i].column_name;
-                    if (json[i].column_name === 'idasset' || json[i].column_name === 'sn' || json[i].column_name === 'introductiondate')
+                    if (json[i].column_name === 'idasset' || json[i].column_name === 'introductiondate')
                         copyContent.req = 'y';
                     copyContents.push(copyContent);
                 }
@@ -229,7 +229,7 @@ function ContentList() {
                 .then(res => {
                     if (res.status === 404) {
 
-                        const onRegPWS = async () => {
+                        /* const onRegPWS = async () => {
 
                             const status = await getConfirmationYN(`S/N(${serialNo}) 자산을 등록하겠습니까?`);
                             console.log('getConfirmationYN returns : ', status);
@@ -249,7 +249,11 @@ function ContentList() {
                                 return;
                             }
                         };
-                        onRegPWS();
+                        onRegPWS(); */
+                        getConfirmationOK('스캔한 바코드는 DB에 존재하지 않습니다.');
+                        setSerialNo('');
+                        setIsOpen(false);
+                        return;
                     }
                     else if (!res.ok) {
                         throw new Error(res.status);
@@ -340,8 +344,8 @@ function ContentList() {
         console.log('pwsInfo : ', pwsInfo);
         console.log(`managementId: ${managementId}, serialNo: ${serialNo}`)
 
-        if ((pwsInfo.idasset === null || pwsInfo.idasset === '') && (pwsInfo.sn === null || pwsInfo.sn === '')) {
-            getConfirmationOK('해당 PWS의 자산관리번호와 S/N 중에서 최소 하나는 입력되어야 수정이 가능합니다.');
+        if (pwsInfo.idasset === null || pwsInfo.idasset === '') {
+            getConfirmationOK('해당 자산의 자산관리번호는 필수입력 항목입니다.');
             return;
         }
         let msg = '';
@@ -393,7 +397,7 @@ function ContentList() {
     };
 
     return (
-        <div className={isOpen ? "show-list" : "hide-list"}>
+        <div className={isOpen ? doScan ? "show-listOnScan" : "show-list" : "hide-list"}>
             <ConfirmationYN />
             <ConfirmationOK />
             <Paper sx={{

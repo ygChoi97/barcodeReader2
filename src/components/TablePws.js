@@ -5,8 +5,9 @@ import "../css/tablePws.css";
 import "../css/foot.css";
 import PwsContext from "./PWS-Context";
 import SN_Context from "./SN-Context";
+import ContentList from "./ContentList";
 
-function TablePws({ columns, data, dataWasFiltered }) {
+function TablePws({ columns, data, dataWasFiltered, doScan }) {
     const { managementId, setManagementId } = useContext(PwsContext);
     const { serialNo, setSerialNo } = useContext(SN_Context);
 
