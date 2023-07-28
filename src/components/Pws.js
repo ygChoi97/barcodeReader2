@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect, useRef, useState } from "react";
+import { createRef, useCallback, useContext, useEffect, useRef, useState } from "react";
 import "../css/btnImportExport.css";
 import "../css/dropdownmenu.css"
 import TablePws from "./TablePws";
@@ -94,7 +94,8 @@ export function Pws({ doScan }) {
 
         let copyColumns = [];
         for (let i = 0; i < json.length; i++) {
-          let copyColumn = { accessor: '', Header: '' };
+          const ref = createRef();
+          let copyColumn = { accessor: '', Header: '', ref: ref, Filter: '', filter: '' };
           copyColumn.accessor = json[i].column_name;
           copyColumn.Header = json[i].column_comment;
           copyColumns.push(copyColumn);
@@ -119,8 +120,17 @@ export function Pws({ doScan }) {
       wb.xlsx.load(buffer).then(workbook => {
         console.log(workbook, 'workbook instance')
         workbook.eachSheet((sheet, id) => {
+          if(id > 1) return;
           for (let c = 1; c <= sheet.getRow(1).cellCount; c++) {
-            if (columns[c - 1].Header !== sheet.getRow(1).getCell(c).toString()) {
+            let strDB = columns[c - 1].Header;
+            strDB = strDB.replace(/\n/g, "");
+            strDB = strDB.replace(/\s*/g, "");
+            let strExcel = sheet.getRow(1).getCell(c).toString();
+            strExcel = strExcel.replace(/\n/g, "");
+            strExcel = strExcel.replace(/\s*/g, "");
+            if (strDB !== strExcel) {
+              console.log(columns[c - 1].Header, ' : ', sheet.getRow(1).getCell(c).toString())
+              console.log(strDB, ' : ', strExcel)
               getConfirmationOK('해당 파일의 포맷은 import 불가합니다. 파일을 다시 선택해주세요.');
               return;
             }
@@ -128,7 +138,7 @@ export function Pws({ doScan }) {
 
           let tempDbData = [];
           for (let r = 2; r <= sheet.rowCount; r++) {
-            let isEmpty = { idasset: false, sn: false };
+            let isEmpty = { idasset: false };
             let obj = {};
             for (let c = 1; c <= sheet.getRow(1).cellCount; c++) {
 
@@ -137,13 +147,13 @@ export function Pws({ doScan }) {
               str = str.trim();             // 양쪽 공백 제거
 
               if (columns[c - 1].accessor === 'idasset' && str == '') isEmpty.idasset = true;
-              if (columns[c - 1].accessor === 'sn' && str == '') isEmpty.sn = true;
-              if (isEmpty.idasset & isEmpty.sn) {
-                getConfirmationOK(`실패 : 선택한 엑셀파일의 ${r}번째 행의 자산관리번호와 S/N가 둘다 빈칸입니다.\n import를 취소합니다.`);
+              
+              if (isEmpty.idasset) {
+                getConfirmationOK(`실패 : 선택한 엑셀파일의 ${r}번째 행의 자산관리번호가 빈칸입니다.\n import를 취소합니다.`);
                 return;
               }
 
-              if (columns[c - 1].accessor === 'introductiondate') {
+              if (columns[c - 1].accessor.includes('date')) {
                 if (str !== '') {
                   obj[columns[c - 1].accessor] = new Date(sheet.getRow(r).getCell(c));
                 }
@@ -336,16 +346,13 @@ export function Pws({ doScan }) {
               </ul>
             </nav>
           </div>
-          {/* <div>123</div>
-          <div>456</div> */}
         </div>
-
       </div>
 
       <input type="file" accept=".xls,.xlsx" onChange={readExcel} onClick={(event) => {
         event.target.value = null
       }} ref={$fileInput} hidden></input>
-      <TablePws columns={columns} data={data} dataWasFiltered={dataWasFiltered} doScan={doScan}/>
+      <TablePws columns={columns} data={data} minCellWidth={50} dataWasFiltered={dataWasFiltered} doScan={doScan}/>
     </div>
   );
 }

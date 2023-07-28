@@ -147,7 +147,7 @@ function Content({ item, update }) {
                                     <MenuItem value={"매각"}>매각</MenuItem>
                                 </Select>
                             </>  
-                            :
+                            /* :
                             item.dbColumn == 'area' ?
                             <>
                             
@@ -176,7 +176,7 @@ function Content({ item, update }) {
                                     <MenuItem value={"대방"}>대방</MenuItem>
                                     <MenuItem value={"기타"}>기타</MenuItem>
                                 </Select>
-                            </>                              :                           
+                            </>                              */ :                           
                             <TextField
                                 //placeholder={item.value}
                                 fullWidth

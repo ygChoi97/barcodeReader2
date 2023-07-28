@@ -3,12 +3,12 @@
     flex-direction: row;
     align-items :flex-start;
     position: absolute;
-    top: 5%;
+    top: 3%;
     right: calc(5px);
     margin: 0.5rem 0;
     z-index: 3;
     opacity: 0.25;
-    transition: .4s;
+    transition: .3s;
 }
 
 .show-list:hover{
@@ -16,7 +16,7 @@
     flex-direction: row;
     align-items :flex-start;
     position: absolute;
-    top: 5%;
+    top: 3%;
     right: calc(5px);
     margin: 0.5rem 0;
     z-index: 3;
@@ -46,5 +46,5 @@
     right: calc(5px);
     margin: 0.5rem 0;
     z-index: 3;
-    transition: .3s;
+    transition: .2s;
  }

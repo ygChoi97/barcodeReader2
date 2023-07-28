@@ -1,15 +1,80 @@
-import { useContext, useEffect } from "react";
+import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { useTable, usePagination, useFilters, useGlobalFilter, useSortBy } from "react-table";
 import { GlobalFilter, DefaultFilterForColumn } from "./Filter";
-import "../css/tablePws.css";
+// import "../css/tablePws.css";
+import "../css/tableLayout.css"
 import "../css/foot.css";
 import PwsContext from "./PWS-Context";
 import SN_Context from "./SN-Context";
-import ContentList from "./ContentList";
 
-function TablePws({ columns, data, dataWasFiltered, doScan }) {
+function TablePws({ columns, minCellWidth, data, dataWasFiltered, doScan }) {
     const { managementId, setManagementId } = useContext(PwsContext);
     const { serialNo, setSerialNo } = useContext(SN_Context);
+
+    const [tableHeight, setTableHeight] = useState("auto");
+    const [activeIndex, setActiveIndex] = useState(null);
+    const tableElement = useRef(null);
+    const tableContainerElement = useRef(null);
+    const numColumns = columns.length;
+    // 스크롤바 x position - 화면 밖 영역 column 너비계산 적용하기 위함
+    useEffect(() => {
+        setTableHeight(tableElement.current.offsetHeight);
+    }, []);
+
+    const mouseDown = (index) => {
+        setActiveIndex(index);
+    };
+
+    const mouseMove = useCallback(
+        (e) => {
+            const gridColumns = columns.map((col, i) => {
+                console.log(e.clientX, '+', tableContainerElement.current.scrollLeft, '-', col.ref.current.offsetLeft)
+                if (i === activeIndex) {
+                    //const width = e.clientX - col.ref.current.offsetLeft;
+                    const width = e.clientX + tableContainerElement.current.scrollLeft - col.ref.current.offsetLeft;
+                    console.log(e.clientX, '+', tableContainerElement.current.scrollLeft, '-', col.ref.current.offsetLeft)
+                    if (width >= minCellWidth) {
+                        return `${width}px`;
+                    }
+                }
+                return `${col.ref.current.offsetWidth}px`;
+            });
+
+            tableElement.current.style.gridTemplateColumns = `${gridColumns.join(
+                " "
+            )}`;
+        },
+        [activeIndex, columns, minCellWidth]
+    );
+
+    const removeListeners = useCallback(() => {
+        window.removeEventListener("mousemove", mouseMove);
+        window.removeEventListener("mouseup", removeListeners);
+    }, [mouseMove]);
+
+    const mouseUp = useCallback(() => {
+        setActiveIndex(null);
+        removeListeners();
+    }, [setActiveIndex, removeListeners]);
+
+    useEffect(() => {
+        if (activeIndex !== null) {
+            window.addEventListener("mousemove", mouseMove);
+            window.addEventListener("mouseup", mouseUp);
+        }
+        return () => {
+            removeListeners();
+        };
+    }, [activeIndex, mouseMove, mouseUp, removeListeners]);
+
+    const resetTableCells = () => {
+        tableElement.current.style.gridTemplateColumns = `repeat(${numColumns}, minmax(50px, auto))`;
+    };
+
+    const styleTable = {
+        gridTemplateColumns: `repeat(${numColumns}, minmax(50px, auto))`,
+        width: '180%',
+    }
 
     const {
         getTableProps,
@@ -32,7 +97,7 @@ function TablePws({ columns, data, dataWasFiltered, doScan }) {
         preGlobalFilteredRows,
         // setFilter is the key!!!
         setFilter,
-    } = useTable({ columns, data, initialState: { pageIndex: 0, pageSize: 20 }, defaultColumn: { Filter: DefaultFilterForColumn }, }, useFilters, useGlobalFilter, useSortBy, usePagination);
+    } = useTable({ columns, data, initialState: { pageIndex: 0, pageSize: 50 }, defaultColumn: { Filter: DefaultFilterForColumn }, }, useFilters, useGlobalFilter, useSortBy, usePagination);
 
     const { pageIndex, pageSize } = state;
 
@@ -59,8 +124,9 @@ function TablePws({ columns, data, dataWasFiltered, doScan }) {
 
     return (
         <>
-            <div style={{ width: '100%', height: 'calc(100vh - 165px)', overflow: 'auto' }}>
-                <table className="pws-table" {...getTableProps()}>
+            <div style={{ width: '100vw', height: 'calc(100vh - 165px)', overflow: 'hidden' }}>
+            <div ref={tableContainerElement} style={{ width: '100%',height: `calc(100vh - 165px)`, overflowX: 'auto' }}>
+                <table className="return-table" style={styleTable} ref={tableElement} {...getTableProps()}>
                     <thead>
                         {/* <tr>            
                         <th
@@ -79,16 +145,22 @@ function TablePws({ columns, data, dataWasFiltered, doScan }) {
                     </tr> */}
                         {headerGroups.map((headerGroup) => (
                             <tr {...headerGroup.getHeaderGroupProps()}>
-                                {headerGroup.headers.map((column) => (
-                                    <th {...column.getHeaderProps(column.getSortByToggleProps())}>
-                                        {column.render("Header")}
+                                {headerGroup.headers.map((column, i) => (
+                                    <th ref={column.ref} key={`column.accessor(${i})`}
+                                        {...column.getHeaderProps(column.getSortByToggleProps())}>
                                         <span>
+                                            {column.render("Header")}
                                             {column.isSorted
                                                 ? column.isSortedDesc
-                                                    ? '⬇'
-                                                    : '⬆'
-                                                : '⇳'}
+                                                    ? '🔽'
+                                                    : '🔼'
+                                                : ''}
                                         </span>
+                                        <div
+                                            style={{ height: tableHeight }}
+                                            onMouseDown={() => mouseDown(i)}
+                                            className={`resize-handle ${activeIndex === i ? "active" : "idle"}`}
+                                        />
                                         {/* Rendering Default Column Filter */}
                                         {/* <div>
                                         {column.canFilter ? column.render("Filter")
@@ -105,13 +177,16 @@ function TablePws({ columns, data, dataWasFiltered, doScan }) {
                             return (
                                 <tr onClick={(event) => handleRowClick(event, row.values)} {...row.getRowProps()} >
                                     {row.cells.map((cell) => (
-                                        <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                                        <td title={cell.value} {...cell.getCellProps()}>
+                                        <span>{cell.render("Cell")}</span>
+                                    </td>
                                     ))}
                                 </tr>
                             );
                         })}
                     </tbody>
                 </table>
+                </div>
             </div>
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '1rem' }}>
                 <button className="btnPagePwsSE" onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
@@ -159,6 +234,7 @@ function TablePws({ columns, data, dataWasFiltered, doScan }) {
                     ))}
                 </select>
                 <span style={{ marginLeft: '1rem' }}>{rows.length} rows</span>
+                <button className="btnPagePws" style={{ margin: '0 30px' }} onClick={resetTableCells}>Layout Reset</button>
             </div>
         </>
     );
